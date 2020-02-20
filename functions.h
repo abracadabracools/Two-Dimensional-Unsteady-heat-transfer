@@ -1,3 +1,6 @@
+#include <iostream>
+using namespace std;
+
 #pragma once
 //#include "functions.cpp"
 class arrays
@@ -10,7 +13,7 @@ public:
 		this->size = size;
 		// intializing to axis nodal values
 		for (int i = 0; i < size; ++i)
-			data[i] =  i* (length/double(size));
+			data[i] =  i* (length/double(size-1));
 	}
 	
 	~arrays() { delete[] data; }
@@ -22,7 +25,7 @@ public:
 	double** arr;
 	double* rows;
 	
-
+	// constructor
 	twodarrays(int rows, int cols, double lw, double tw, double rw, double bw) {
 
 		arr = new double* [rows];
@@ -56,16 +59,26 @@ public:
 
 		// correcting corner temperatures
 		// top left corner
-		arr[0][0] = (lw + tw) / 2.;
+		//arr[0][0] = (lw + tw) / 2.;
 		// top right corner
-		arr[0][cols - 1] = (tw + rw) / 2.;
+	//	arr[0][cols - 1] = (tw + rw) / 2.;
 		// bottom right corner
-		arr[rows - 1][cols - 1] = (rw + bw) / 2.;
+		//arr[rows - 1][cols - 1] = (rw + bw) / 2.;
 		// bottom left corner
-		arr[rows - 1][0] = (lw + bw) / 2.;
+		//arr[rows - 1][0] = (lw + bw) / 2.;
 	}
 		
-		~twodarrays() { delete[] arr; }
+	// destructor
+
+	~twodarrays() { delete[] arr; }
+
+	// gauss jacobi iterations
+
+	void gauss_jacobi_implicit( int nx, int ny, double k1, double k2, double tolerance, double totime, double dtime);
+	
+	// printout for plotting
+
+	void printout( int nx, int ny);
 };
 
 
