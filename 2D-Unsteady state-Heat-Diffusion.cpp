@@ -2,39 +2,36 @@
 //
 
 #include <iostream>
-//#include <fstream>
-//#include <math.h>
+#include <fstream>
+#include <math.h>
 #include "functions.h"
 
-//#include "functions.cpp"
 using namespace std;
 
-void gauss_jacobi_implicit(twodarrays , int , int , double , double , double , double , double );
-void printout(twodarrays);
 int main()
 {
-    std::cout << "Hello World!\n";
+    std::cout << "Hello Spiderman!\n";
     //----------
     // defining square domain
     int L = 1;
-    int nx, ny;
+    int nx, ny,nxx, nyy;
     // input nx grids
-    cout << "Input your number of grids for x- axis " << "\n";
-    cin >> nx;
-    cout << "Input your number of grids for y- axis " << "\n";
-    cin >> ny;
+    // cout << "Input your number of descrete elements for x- axis " << "\n";
+    //cin >> nxx;
+    nxx = 8;
 
+    //cout << "Input your number of descrete elements for y- axis " << "\n";
+    //cin >> nyy;
+    nyy = 8;
     // calculating x-axis and y-axis co-ordinates
 
-    // initialising x-axis, y- axis
-    // grids and nodes
-    // grids and nodes in X- axis
-
+    /// nx, ny is the number cordinates in x-,y-, axis.
+    nx = nxx + 1;
+    ny = nyy + 1;
     arrays x_axis(nx,L);
     arrays y_axis(ny,L);
-
    // cout << x_axis.data[0] << "\t" << x_axis.data[1] << "\t" << x_axis.data[2] << "\n";
-    //cout << y_axis.data[0] << "\t" << y_axis.data[1] << "\t" << y_axis.data[2] << "\t";
+   // cout << y_axis.data[0] << "\t" << y_axis.data[1] << "\t" << y_axis.data[2] << "\t";
 
 
 
@@ -42,20 +39,24 @@ int main()
 
     // applying boundary conditions 
     double left_wall_temp, right_wall_temp, bottom_wall_temp, top_wall_temp;
-    cout << "Input your left wall temperature" << "\n";
-    cin >> left_wall_temp;
-    cout << "Input your top wall temperature" << "\n";
-    cin >> top_wall_temp;
-    cout << "Input your right wall temperature" << "\n";
-    cin >> right_wall_temp;
-    cout << "Input your bottom wall temperature" << "\n";
-    cin >> bottom_wall_temp;
-   
+    //cout << "Input your left wall temperature" << "\n";
+   // cin >> left_wall_temp;
+   // cout << "Input your top wall temperature" << "\n";
+    //cin >> top_wall_temp;
+   // cout << "Input your right wall temperature" << "\n";
+   // cin >> right_wall_temp;
+  //  cout << "Input your bottom wall temperature" << "\n";
+   // cin >> bottom_wall_temp;
+    left_wall_temp = 10;
+    right_wall_temp = 10;
+    bottom_wall_temp = 10;
+    top_wall_temp = 10;
 
     twodarrays temperature(nx, ny, left_wall_temp, top_wall_temp, right_wall_temp, bottom_wall_temp);
 
+    /*
     // print test
-  /*for (int i = 0; i < nx; i++)
+  for (int i = 0; i < nx; i++)
   {
       for (int j = 0; j < ny; j++)
       {
@@ -63,39 +64,58 @@ int main()
       }
 
   }
+
   */
+
+ // cout << "\n";
    // define dx, dy
-  double dx = ( L / double(nx));
-  double dy = (L / double(ny));
+
+  double dx = ( L / double(nxx));
+  double dy = (L / double(nyy));
 
   // define dt
   double totime, dtime;
-  cout << "Input total time of this simulation" << "\n";
-  cin >> totime;
-  cout << "Input time increment(dt) for this simulation" << "\n";
-  cin >> dtime;
-
+ // cout << "Input total time of this simulation" << "\n";
+  //cin >> totime;
+  totime = 7000;
+  //cout << "Input time increment(dt) for this simulation" << "\n";
+  //cin >> dtime;
+  dtime = 0.001;
   // define
   double alpha;
 
-  cout << "Input Coefficient of thermal diffusivity for this simulation" << "\n";
-  cin >> alpha;
+ // cout << "Input Coefficient of thermal diffusivity for this simulation" << "\n";
+  //cin >> alpha;
 
+  alpha = 1e-4;
  
 
   // gauss - jacobi explicit iteration scheme
 
    // define tolerance
-  double tolerance = 1e-4;
+  double tolerance = 1e-3;
 
   double k1 = (alpha * dtime) /  (dx*dx);
   double k2 = (alpha * dtime) / ( dy*dy);
 
   //  gauss - jacobi implicit
 
-  gauss_jacobi_implicit(temperature, nx, ny, k1, k2, tolerance, totime, dtime);
+  temperature.gauss_jacobi_implicit(nx, ny, k1, k2, tolerance, totime, dtime);
+ 
+  // print test
+ 
+  for (int i = 0; i < nx; i++)
+  {
+      for (int j = 0; j < ny; j++)
+      {
+          cout << temperature.arr[i][j] << "\t";
+      }
 
-  printout(temperature);
+  }
+  
+  temperature.printout(nx,ny);
+
+  return 0;
 
 }
 
@@ -110,6 +130,3 @@ int main()
 //   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
 //   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
 
-void gauss_jacobi_implicit()
-{
-}
